@@ -12,13 +12,26 @@ var render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        wireframeBackground: 'transparent'
-    }
+        wireframeBackground: 'transparent',
+        wireframes: false
+    },
 });
 
 // create two boxes and a ground
-var boxA = Bodies.rectangle(400, 200, 80, 80);
-var boxB = Bodies.rectangle(450, 50, 80, 80);
+var boxA = Bodies.rectangle(400, 200, 30, 30, {
+    render: {
+        sprite: {
+            texture: './snowflake.svg'
+        }
+    }
+});
+var boxB = Bodies.rectangle(450, 50, 30, 30, {
+    render: {
+        sprite: {
+            texture: './snowflake.svg'
+        }
+    }
+});
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 
 // add all of the bodies to the world
