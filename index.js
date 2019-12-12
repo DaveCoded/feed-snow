@@ -18,14 +18,14 @@ var render = Render.create({
 });
 
 // create two boxes and a ground
-var boxA = Bodies.rectangle(400, 200, 30, 30, {
+var boxA = Bodies.rectangle(400, 0, 30, 30, {
     render: {
         sprite: {
             texture: './snowflake.svg'
         }
     }
 });
-var boxB = Bodies.rectangle(450, 50, 30, 30, {
+var boxB = Bodies.rectangle(410, 50, 30, 30, {
     render: {
         sprite: {
             texture: './snowflake.svg'
@@ -35,7 +35,19 @@ var boxB = Bodies.rectangle(450, 50, 30, 30, {
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 
 // add all of the bodies to the world
-World.add(engine.world, [boxA, boxB, ground]);
+
+for(let i = 0; i < 80; i++){
+    let x = Math.random() * 1000;
+    let y = Math.random() * 200;
+    World.add(engine.world, Bodies.rectangle(x, y, 30, 30, {
+        render: {
+            sprite: {
+                texture: './snowflake.svg'
+            }
+        }
+    })
+    )}
+World.add(engine.world, ground);
 
 // run the engine
 Engine.run(engine);
