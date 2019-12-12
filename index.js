@@ -39,7 +39,9 @@ var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 for(let i = 0; i < 80; i++){
     let x = Math.random() * 1000;
     let y = Math.random() * 200;
+    let airFriction = Math.random() * (0.6 - 0.2) + 0.2;
     World.add(engine.world, Bodies.rectangle(x, y, 30, 30, {
+        frictionAir: airFriction,
         render: {
             sprite: {
                 texture: './snowflake.svg'
