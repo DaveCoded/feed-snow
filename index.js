@@ -3,9 +3,13 @@ var Engine = Matter.Engine,
   Render = Matter.Render,
   World = Matter.World,
   Bodies = Matter.Bodies;
+Body = Matter.Body;
 
 // create an engine
 var engine = Engine.create();
+
+engine.world.gravity.x = 0.001;
+engine.world.gravity.y = 0.1;
 
 // create a renderer
 var render = Render.create({
@@ -16,62 +20,31 @@ var render = Render.create({
     wireframes: false
   }
 });
-
-// create two boxes and a ground
-var boxA = Bodies.rectangle(400, 0, 30, 30, {
-  render: {
-    sprite: {
-      texture: "./snowflake.svg"
-    }
-  }
-});
-var boxB = Bodies.rectangle(410, 50, 30, 30, {
-  render: {
-    sprite: {
-      texture: "./snowflake.svg"
-    }
-  }
-});
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-
-// add all of the bodies to the world
-
-// get falling continuously
-// get random sizes (potentially complex)
-
-// while loop set interval
-
-// setinterval
 
 setInterval(function() {
   let x = Math.random() * 1000;
-  let y = Math.random() * 200;
-  World.add(
-    engine.world,
-    Bodies.rectangle(x, 0, 30, 30, {
-      render: {
-        sprite: {
-          texture: "./snowflake.svg"
-        }
+  var flake = Bodies.rectangle(x, -50, 30, 30, {
+    render: {
+      sprite: {
+        texture: "./snowflake.svg"
       }
-    })
+    },
+    angle: Math.random() * 9
+  });
+  World.add(engine.world, flake);
+  Body.applyForce(
+    flake,
+    { x: flake.position.x, y: flake.position.y },
+    { x: Math.random() * -0.01, y: 0 }
   );
-}, 100);
+  Body.applyForce(
+    flake,
+    { x: flake.position.x + 10, y: flake.position.y + 10 },
+    { x: Math.random() * 0.01, y: 0 }
+  );
+}, 500);
 
-// for (let i = 0; i < 80; i++) {
-//   let x = Math.random() * 1000;
-//   let y = Math.random() * 200;
-//   World.add(
-//     engine.world,
-//     Bodies.rectangle(x, y, 30, 30, {
-//       render: {
-//         sprite: {
-//           texture: "./snowflake.svg"
-//         }
-//       }
-//     })
-//   );
-// }
 World.add(engine.world, ground);
 
 // run the engine
