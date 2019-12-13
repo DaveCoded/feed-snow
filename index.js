@@ -1,56 +1,60 @@
 // module aliases
 var Engine = Matter.Engine,
     Render = Matter.Render,
-    World = Matter.World,
-    Bodies = Matter.Bodies;
+    World  = Matter.World,
+    Bodies = Matter.Bodies,
+		Body   = Matter.Body,
+    flake;
 
 // create an engine
 var engine = Engine.create();
+engine.world.gravity.x = 0.001;
+engine.world.gravity.y = 0.06;
 
 // create a renderer
+let windowWidth = window.innerWidth;
+let windowHeight = window.innerHeight;
+
 var render = Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-        wireframeBackground: 'transparent',
-        wireframes: false
+  element: document.body,
+  engine: engine,
+  options: {
+    wireframeBackground: "transparent",
+    wireframes: false,
+    width: windowWidth,
+    height: windowHeight
+  }
+});
+
+var ground = Bodies.rectangle(innerWidth, innerHeight, innerWidth * 2, 10, { isStatic: true });
+
+setInterval(function() {
+  let x = Math.random() * innerWidth;
+  flake = Bodies.rectangle(x, -30, 13, 13, {
+    render: {
+      sprite: {
+        texture: "./snowflake.svg"
+      }
     },
-});
+		angle: Math.random() * 9
+  });
 
-// create two boxes and a ground
-var boxA = Bodies.rectangle(400, 0, 30, 30, {
-    render: {
-        sprite: {
-            texture: './snowflake.svg'
-        }
-    }
-});
-var boxB = Bodies.rectangle(410, 50, 30, 30, {
-    render: {
-        sprite: {
-            texture: './snowflake.svg'
-        }
-    }
-});
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+  World.add(engine.world, flake);
 
-// add all of the bodies to the world
+  Body.applyForce(
+    flake,
+    { x: flake.position.x, y: flake.position.y },
+    { x: Math.random() * -0.001, y: 0 }
+  );
+  Body.applyForce(
+    flake,
+    { x: flake.position.x + 10, y: flake.position.y + 10 },
+    { x: Math.random() * 0.001, y: 0 }
+  );
 
-for(let i = 0; i < 80; i++){
-    let x = Math.random() * 1000;
-    let y = Math.random() * 200;
-    let airFriction = Math.random() * (0.6 - 0.2) + 0.2;
-    World.add(engine.world, Bodies.rectangle(x, y, 30, 30, {
-        frictionAir: airFriction,
-        render: {
-            sprite: {
-                texture: './snowflake.svg'
-            }
-        }
-    })
-    )}
+}, 200);
+
 World.add(engine.world, ground);
-
 // run the engine
 Engine.run(engine);
 
